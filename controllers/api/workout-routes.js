@@ -3,7 +3,7 @@ const { Workout } = require("../../models");
 
 router.post("/workouts", async (req, res) => {
   try {
-    const workoutData = await Workout.create(req.body);
+    const workoutData = await Workout.create({});
     res.status(200).json(workoutData);
   } catch (err) {
     res.status(500).json(err);
@@ -50,16 +50,19 @@ router.get("/workouts/range", async (req, res) => {
           },
         },
       },
-    ]);
+    ])
+      .sort({ _id: -1 })
+      .limit(7);
     res.status(200).json(workoutData);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
 router.delete("/workouts", async (req, res) => {
   try {
-    const workoutData = await Workout.findByIdAndDelete(req.body);
+    await Workout.findByIdAndDelete(req.body);
     res.status(200).json(true);
   } catch (err) {
     res.status(500).json(err);
